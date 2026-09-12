@@ -5,6 +5,24 @@
   font-family: "Outfit",sans-serif;
 }
 
+html.dark, html.dark body, html.dark #root {
+  background-color: #0f0f0f;
+  color: #ffffff;
+}
+
+html:not(.dark), html:not(.dark) body, html:not(.dark) #root {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+#root {
+  min-height: 100vh;
+}
+
 
 @theme{
   --color-primary:#E6CCFF

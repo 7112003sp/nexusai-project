@@ -18,9 +18,8 @@ const App = () => {
   return (
     <>
     <Toaster position="top-right" />
-    {!ismenuopen && <IoMenu className='fixed top-3 z-50 md:hidden   left-3 w-8 h-8 cursor-pointer
-    dark:text-[#ffffff]' onClick={() => setismenuopen(true)}/>}
-    {user ? (<div className='dark:bg-linear-to-b from-[#242124] to-[#000000] dark:text-white'>
+    {!ismenuopen && <IoMenu className='fixed top-3 z-50 md:hidden left-3 w-8 h-8 cursor-pointer text-gray-800 dark:text-white' onClick={() => setismenuopen(true)}/>}
+    {user ? (<div className='bg-white text-gray-900 dark:bg-linear-to-b dark:from-[#242124] dark:to-[#000000] dark:text-white transition-colors duration-200'>
     <div className='flex h-screen w-screen'>
       <Sidebar ismenuopen = {ismenuopen} setismenuopen = {setismenuopen}/>
       <Routes>

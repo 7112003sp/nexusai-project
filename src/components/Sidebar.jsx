@@ -33,7 +33,12 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
     try {
       const { data } = await axios.post("/api/chat/delete", { chatId }, { headers: { Authorization: `Bearer ${token}` } })
       if(data.success) {
+        if (selecteChat && selecteChat._id === chatId) {
+          const remaining = (chats || []).filter(c => c._id !== chatId)
+          setselecteChat(remaining.length > 0 ? remaining[0] : null)
+        }
         await fetchUsersChats()
+        toast.success("Chat deleted")
       } else {
         toast.error(data.message)
       }
@@ -54,14 +59,16 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
     {ismenuopen && (
       <div 
         onClick={() => setismenuopen(false)} 
+        aria-label="Close sidebar overlay"
         className='fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm transition-opacity'
       />
     )}
-   <div className={`flex h-screen flex-col md:min-w-72 min-w-72 sm:min-w-84 p-4 bg-gray-900 dark:bg-linear-to-b
-    from-[#242124] to-[#000000] border-r border-[#80609F]/30 max-md:fixed max-md:left-0 max-md:top-0 max-md:h-full max-md:w-72 z-50 overscroll-contain touch-pan-y
+   <aside aria-label="Chat sidebar" className={`flex h-screen flex-col md:min-w-72 min-w-72 sm:min-w-84 p-4 bg-white dark:bg-linear-to-b
+    dark:from-[#242124] dark:to-[#000000] border-r border-gray-200 dark:border-[#80609F]/30 max-md:fixed max-md:left-0 max-md:top-0 max-md:h-full max-md:w-72 z-50 overscroll-contain touch-pan-y
     transition-transform duration-500 ${ismenuopen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full'}`}>
       <div className='flex flex-row gap-1.5'>
-      <img className='w-16 h-16 object-contain cursor-pointer ' 
+      <img className='w-16 h-16 object-contain cursor-pointer' 
+      alt="Nexus AI Brand"
       src={theme === "dark" ? assets.logo_full_dark : assets.logo_full}/>
       <div className='flex h-16 justify-center gap-0.5 flex-col'>
       <p className={theme === 'dark' ? 'text-2xl text-white font-semibold' : 'text-2xl text-black font-medium'}>Nexus Ai</p> 
@@ -70,35 +77,35 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
       </div>
       <button onClick={handleCreateChat} className='bg-[#0A9BFF] w-full text-white flex justify-center text-sm items-center cursor-pointer h-10 py-4 mt-10  rounded-md'>+ New Chat</button>
       <div className='flex items-center gap-2 p-2 w-full mt-4 border border-gray-400 dark:border-white/20 rounded-md '>
-        <CiSearch className='text-2xl dark:text-white'/>
-        <input onChange={(e) => setsearch(e.target.value)} value={search} type='text' placeholder='Search coversations' className='text-xs placeholder:text-gray-400 outline-none bg-transparent dark:text-white'/>
+        <CiSearch className='text-2xl text-gray-700 dark:text-white'/>
+        <input onChange={(e) => setsearch(e.target.value)} value={search} type='text' placeholder='Search coversations' className='text-xs placeholder:text-gray-400 outline-none bg-transparent text-gray-800 dark:text-white'/>
       </div>
-      {(chats || []).length > 0 && <p className='mt-4 text-sm dark:text-white'>Recent Chats</p>}
+      {(chats || []).length > 0 && <p className='mt-4 text-sm text-gray-600 dark:text-white'>Recent Chats</p>}
       <div className='flex-1 overflow-y-auto mt-3 text-sm space-y-3 overscroll-contain pr-1'>
        {
         (chats || []).filter((chat) => chat.messages && chat.messages[0] ? chat.messages[0]?.content.toLowerCase().includes(search.toLowerCase()) : (chat.name || '').toLowerCase().includes(search.toLowerCase()))
         .map((chat,id) => (
-        <div onClick={() => {navigate('/');setismenuopen(false);setselecteChat(chat) }} key={id} className='p-2 px-4 dark:bg-[#57317C]/10 border
-          border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer items-center flex justify-between group'>
+        <div onClick={() => {navigate('/');setismenuopen(false);setselecteChat(chat) }} key={id} className='p-2 px-4 bg-gray-50 hover:bg-gray-100 dark:bg-[#57317C]/10 dark:hover:bg-[#57317C]/20 border
+          border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer items-center flex justify-between group text-gray-800 dark:text-white'>
           <div>
             <p>
               {chat.messages && chat.messages.length > 0 ? chat.messages[0].content.slice(0,32) : chat.name}
             </p>
-            <p>{moment(chat.updatedAt).fromNow()}</p>
+            <p className='text-xs text-gray-400 dark:text-gray-400'>{moment(chat.updatedAt).fromNow()}</p>
             </div>
-            <MdDelete onClick={(e) => handleDeleteChat(e, chat._id)} className= {theme == 'dark' ? 'text-xl hidden group-hover:block text-white' : 'text-xl  hidden group-hover:block'}/>
+            <MdDelete onClick={(e) => handleDeleteChat(e, chat._id)} className= {theme == 'dark' ? 'text-xl hidden group-hover:block text-white' : 'text-xl hidden group-hover:block text-gray-600'}/>
         </div>
       ))
        }
       </div>
-       <div onClick={() => {navigate('/credits'); setismenuopen(false)}} className='flex flex-row  mt-4 hover:scale-103 transition-transform duration-75 cursor-pointer items-center border border-gray-300 dark:border-white/15 rounded-md p-3 gap-2 '>
+       <div onClick={() => {navigate('/credits'); setismenuopen(false)}} className='flex flex-row mt-4 hover:scale-103 transition-transform duration-75 cursor-pointer items-center border border-gray-300 dark:border-white/15 rounded-md p-3 gap-2 text-gray-800 dark:text-white'>
          <IoDiamond className="text-xl text-black dark:text-white" />
         <div>
        <p>Credits: {user?.credits}</p>
-       <p className='text-xs font-light'>Purchase credits to use quickgpt</p>
+       <p className='text-xs font-light text-gray-500 dark:text-gray-300'>Purchase credits to use quickgpt</p>
        </div>
        </div>
-      <div className='flex items-center justify-between gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md'>
+      <div className='flex items-center justify-between gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md text-gray-800 dark:text-white'>
   <div className='flex items-center gap-2 text-sm'>
     <img
       src={assets.theme_icon}
@@ -121,16 +128,16 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
     <span className='absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform peer-checked:translate-x-4'></span>
   </label>
 </div>
-<div className='flex flex-row justify-between mt-4 cursor-pointer items-center border border-gray-300 dark:border-white/15 group rounded-md p-3 gap-2 '>
-         <CiUser/>
-         <p className=' flex-1 truncate dark:text-primary text-sm'>{user ? user.name : "Login your account"}</p>
+<div className='flex flex-row justify-between mt-4 cursor-pointer items-center border border-gray-300 dark:border-white/15 group rounded-md p-3 gap-2 text-gray-800 dark:text-white'>
+         <CiUser className='text-gray-700 dark:text-white'/>
+         <p className=' flex-1 truncate text-gray-800 dark:text-primary text-sm'>{user ? user.name : "Login your account"}</p>
         <div>
        
-      {user && <IoLogOut onClick={handleLogout} className='text-xl hidden  group-hover:block'/>}
+      {user && <IoLogOut onClick={handleLogout} className='text-xl hidden group-hover:block'/>}
        </div>
        </div>
-       <IoClose onClick={() => setismenuopen(false)} className='fixed top-3 right-3 text-4xl cursor-pointer md:hidden'/>
-    </div>
+       <IoClose onClick={() => setismenuopen(false)} aria-label="Close menu" className='fixed top-3 right-3 text-4xl cursor-pointer md:hidden text-gray-800 dark:text-white'/>
+    </aside>
     </>
   )
 }

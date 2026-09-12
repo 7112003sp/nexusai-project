@@ -49,8 +49,8 @@ const Credits = () => {
   if (loading) return <Loading />
 
   return (
-    <div className='max-w-7xl h-screen overflow-y-scroll mx-auto px-4 sm:px-6 lg:px-8 py-12 '>
-      <h2 className='text-3xl font-semibold text-center mb-10 xl:mt-30 text-gray-800 dark:text-white'>Credit Plans</h2>
+    <main className='max-w-7xl h-screen overflow-y-scroll mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+      <h1 className='text-3xl font-semibold text-center mb-10 xl:mt-30 text-gray-800 dark:text-white'>Credit Plans</h1>
       <div className="flex flex-wrap justify-center gap-8">
         {plans.map((plan) => (
           <div
@@ -62,9 +62,9 @@ const Credits = () => {
             }`}
           >
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 {plan.name}
-              </h3>
+              </h2>
 
               <p className="text-2xl font-bold text-purple-600 dark:text-purple-300 mb-4">
                 ${plan.price}
@@ -82,6 +82,7 @@ const Credits = () => {
 
             <button
               onClick={() => handlePurchase(plan._id)}
+              aria-label={`Buy ${plan.name} plan with ${plan.credits} credits for $${plan.price}`}
               className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer"
             >
               Buy Now
@@ -89,7 +90,7 @@ const Credits = () => {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   )
 }
 

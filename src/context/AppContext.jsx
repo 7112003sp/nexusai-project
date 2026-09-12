@@ -5,7 +5,7 @@ const AppContext = createContext()
 import axios from 'axios'
 import toast from "react-hot-toast";
 
-axios.defaults.baseURL = "https://nexusai-backend-three.vercel.app"
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL || "https://nexusai-backend-three.vercel.app"
 
 export const AppContextProvider = ({children}) => {
     const navigate = useNavigate()
@@ -40,8 +40,12 @@ export const AppContextProvider = ({children}) => {
         try {
             if(!user) return toast("Login to create chat")
             navigate('/')
-            await axios.get("/api/chat/create",{headers:{Authorization:`Bearer ${token}`}})
-            await fetchUsersChats()
+            const { data } = await axios.get("/api/chat/create",{headers:{Authorization:`Bearer ${token}`}})
+            if(data.success) {
+                await fetchUsersChats()
+            } else {
+                toast.error(data.message)
+            }
         } catch (error) {
             toast.error(error.message)
         }
@@ -56,12 +60,23 @@ const fetchUsersChats = async () => {
       const fetchedChats = data.chats || data.chatts || [];
       setchats(fetchedChats);
 
-      // If the user has no chats, create one
       if (fetchedChats.length === 0) {
-        await createChat();
-        return fetchUsersChats();
+        // Safe one-time creation to avoid infinite recursion
+        const res = await axios.get("/api/chat/create", { headers: { Authorization: `Bearer ${token}` } });
+        if (res.data?.success) {
+          const fresh = await axios.get("/api/chat/get", { headers: { Authorization: `Bearer ${token}` } });
+          const newChats = fresh.data?.chats || fresh.data?.chatts || [];
+          setchats(newChats);
+          if (newChats.length > 0) setselecteChat(newChats[0]);
+        }
       } else {
-        setselecteChat(fetchedChats[0]);
+        setselecteChat((prev) => {
+          if (prev) {
+            const found = fetchedChats.find((c) => c._id === prev._id);
+            if (found) return found;
+          }
+          return fetchedChats[0];
+        });
       }
     } else {
       setchats([]);

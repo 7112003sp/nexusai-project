@@ -1,0 +1,22 @@
+{
+  "short_name": "Nexus AI",
+  "name": "Nexus AI — Intelligent AI Assistant",
+  "description": "Intelligent conversational AI assistant and coding partner powered by advanced machine learning.",
+  "icons": [
+    {
+      "src": "/nexus.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/nexus.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "display": "standalone",
+  "orientation": "portrait"
+}

@@ -60,26 +60,26 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center dark:bg-linear-to-b from-[#242124] to-[#000000] dark:text-white px-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 dark:bg-linear-to-b dark:from-[#242124] dark:to-[#000000] text-gray-900 dark:text-white px-4">
       <form
         onSubmit={handleSubmit}
-        className="sm:w-[350px] w-full text-center bg-gray-900 border border-gray-800 rounded-2xl px-8"
+        className="sm:w-[350px] w-full text-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl px-8 shadow-xl dark:shadow-none"
       >
-        <h1 className="text-white text-3xl mt-10 font-medium">
+        <h1 className="text-gray-900 dark:text-white text-3xl mt-10 font-medium">
           {state === "login" ? "Login" : "Sign Up"}
         </h1>
 
-        <p className="text-gray-400 text-sm mt-2">
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
           Please sign in to continue
         </p>
 
         {state !== "login" && (
-          <div className="flex items-center mt-6 w-full bg-gray-800 border border-gray-700 h-12 rounded-full overflow-hidden pl-6 gap-2">
+          <div className="flex items-center mt-6 w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 h-12 rounded-full overflow-hidden pl-6 gap-2">
             <input
               type="text"
               name="name"
               placeholder="Name"
-              className="w-full bg-transparent text-white placeholder-gray-400 outline-none"
+              className="w-full bg-transparent text-gray-900 dark:text-white placeholder-gray-400 outline-none"
               value={formData.name}
               onChange={handleChange}
               required
@@ -87,24 +87,24 @@ const Login = () => {
           </div>
         )}
 
-        <div className="flex items-center w-full mt-4 bg-gray-800 border border-gray-700 h-12 rounded-full overflow-hidden pl-6 gap-2">
+        <div className="flex items-center w-full mt-4 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 h-12 rounded-full overflow-hidden pl-6 gap-2">
           <input
             type="email"
             name="email"
             placeholder="Email"
-            className="w-full bg-transparent text-white placeholder-gray-400 outline-none"
+            className="w-full bg-transparent text-gray-900 dark:text-white placeholder-gray-400 outline-none"
             value={formData.email}
             onChange={handleChange}
             required
           />
         </div>
 
-        <div className="flex items-center mt-4 w-full bg-gray-800 border border-gray-700 h-12 rounded-full overflow-hidden pl-6 gap-2">
+        <div className="flex items-center mt-4 w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 h-12 rounded-full overflow-hidden pl-6 gap-2">
           <input
             type="password"
             name="password"
             placeholder="Password"
-            className="w-full bg-transparent text-white placeholder-gray-400 outline-none"
+            className="w-full bg-transparent text-gray-900 dark:text-white placeholder-gray-400 outline-none"
             value={formData.password}
             onChange={handleChange}
             required
@@ -114,7 +114,7 @@ const Login = () => {
         <div className="mt-4 text-left">
           <button
             type="button"
-            className="text-sm text-indigo-400 hover:underline"
+            className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
           >
             Forgot password?
           </button>
@@ -122,7 +122,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="mt-2 w-full h-11 rounded-full text-white bg-indigo-600 hover:bg-indigo-500 transition"
+          className="mt-2 w-full h-11 rounded-full text-white bg-indigo-600 hover:bg-indigo-500 transition cursor-pointer"
         >
           {state === "login" ? "Login" : "Sign Up"}
         </button>
@@ -131,12 +131,12 @@ const Login = () => {
           onClick={() =>
             setState((prev) => (prev === "login" ? "register" : "login"))
           }
-          className="text-gray-400 text-sm mt-3 mb-11 cursor-pointer"
+          className="text-gray-500 dark:text-gray-400 text-sm mt-3 mb-11 cursor-pointer"
         >
           {state === "login"
             ? "Don't have an account?"
             : "Already have an account?"}
-          <span className="text-indigo-400 hover:underline ml-1">
+          <span className="text-indigo-600 dark:text-indigo-400 hover:underline ml-1">
             Click here
           </span>
         </p>
