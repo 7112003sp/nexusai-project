@@ -51,6 +51,7 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
     localStorage.removeItem("token")
     settokken(null)
     setuser(null)
+    setismenuopen(false)
     toast.success("Logged out successfully")
   }
 
@@ -93,7 +94,13 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
             </p>
             <p className='text-xs text-gray-400 dark:text-gray-400'>{moment(chat.updatedAt).fromNow()}</p>
             </div>
-            <MdDelete onClick={(e) => handleDeleteChat(e, chat._id)} className= {theme == 'dark' ? 'text-xl hidden group-hover:block text-white' : 'text-xl hidden group-hover:block text-gray-600'}/>
+            <button 
+              onClick={(e) => handleDeleteChat(e, chat._id)}
+              aria-label="Delete chat"
+              className='p-1 text-gray-400 hover:text-red-500 transition-colors opacity-80 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer'
+            >
+              <MdDelete className='text-lg' />
+            </button>
         </div>
       ))
        }
@@ -128,14 +135,23 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
     <span className='absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform peer-checked:translate-x-4'></span>
   </label>
 </div>
-<div className='flex flex-row justify-between mt-4 cursor-pointer items-center border border-gray-300 dark:border-white/15 group rounded-md p-3 gap-2 text-gray-800 dark:text-white'>
-         <CiUser className='text-gray-700 dark:text-white'/>
-         <p className=' flex-1 truncate text-gray-800 dark:text-primary text-sm'>{user ? user.name : "Login your account"}</p>
-        <div>
-       
-      {user && <IoLogOut onClick={handleLogout} className='text-xl hidden group-hover:block'/>}
-       </div>
-       </div>
+<div className='flex flex-row justify-between mt-4 items-center border border-gray-300 dark:border-white/15 rounded-md p-2.5 gap-2 text-gray-800 dark:text-white'>
+  <div className='flex items-center gap-2 flex-1 min-w-0'>
+    <CiUser className='text-gray-700 dark:text-white text-xl shrink-0'/>
+    <p className='truncate text-gray-800 dark:text-primary text-sm font-medium'>{user ? user.name : "Login your account"}</p>
+  </div>
+  {user && (
+    <button
+      onClick={handleLogout}
+      title="Logout"
+      aria-label="Logout account"
+      className='flex items-center gap-1 text-xs text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 px-2.5 py-1.5 rounded-md transition-colors cursor-pointer shrink-0'
+    >
+      <IoLogOut className='text-base' />
+      <span>Logout</span>
+    </button>
+  )}
+</div>
        <IoClose onClick={() => setismenuopen(false)} aria-label="Close menu" className='fixed top-3 right-3 text-4xl cursor-pointer md:hidden text-gray-800 dark:text-white'/>
     </aside>
     </>
