@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 
 const Sidebar = ({ismenuopen,setismenuopen}) => {
   const navigate = useNavigate()
-  const {chats,setselecteChat,theme,settheme,user,setuser,settokken,axios,token,fetchUsersChats} = useAppContext()
+  const {chats,setchats,setselecteChat,theme,settheme,user,setuser,settokken,axios,token,fetchUsersChats} = useAppContext()
   const [search, setsearch] = useState("")
 
   const handleCreateChat = async () => {

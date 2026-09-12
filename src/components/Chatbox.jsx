@@ -7,7 +7,7 @@ import { assets } from '../assets/assets'
 import toast from 'react-hot-toast'
 
 const Chatbox = () => {
-  const { selecteChat, setselecteChat, chats, theme, axios, token, fetchUsersChats } = useAppContext()
+  const { selecteChat, setselecteChat, chats, setchats, theme, axios, token, fetchUsersChats } = useAppContext()
   const [messages, setmessages] = useState([])
   const [loading, setloading] = useState(false)
   const [prompt, setPrompt] = useState("")
