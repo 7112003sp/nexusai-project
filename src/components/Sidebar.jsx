@@ -29,21 +29,25 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
   }
 
   const handleDeleteChat = async (e, chatId) => {
+    e.preventDefault()
     e.stopPropagation()
     try {
+      const updatedChats = (chats || []).filter((c) => c._id !== chatId)
+      setchats(updatedChats)
+      if (selecteChat && selecteChat._id === chatId) {
+        setselecteChat(updatedChats.length > 0 ? updatedChats[0] : null)
+      }
+
       const { data } = await axios.post("/api/chat/delete", { chatId }, { headers: { Authorization: `Bearer ${token}` } })
       if(data.success) {
-        if (selecteChat && selecteChat._id === chatId) {
-          const remaining = (chats || []).filter(c => c._id !== chatId)
-          setselecteChat(remaining.length > 0 ? remaining[0] : null)
-        }
-        await fetchUsersChats()
         toast.success("Chat deleted")
       } else {
-        toast.error(data.message)
+        toast.error(data.message || "Failed to delete chat")
+        await fetchUsersChats()
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.response?.data?.message || error.message)
+      await fetchUsersChats()
     }
   }
 
@@ -95,11 +99,13 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
             <p className='text-xs text-gray-400 dark:text-gray-400'>{moment(chat.updatedAt).fromNow()}</p>
             </div>
             <button 
+              type="button"
               onClick={(e) => handleDeleteChat(e, chat._id)}
               aria-label="Delete chat"
-              className='p-1 text-gray-400 hover:text-red-500 transition-colors opacity-80 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer'
+              title="Delete chat"
+              className='p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors opacity-90 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shrink-0 z-10'
             >
-              <MdDelete className='text-lg' />
+              <MdDelete className='text-lg pointer-events-none' />
             </button>
         </div>
       ))

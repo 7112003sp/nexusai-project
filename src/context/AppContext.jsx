@@ -61,14 +61,7 @@ const fetchUsersChats = async () => {
       setchats(fetchedChats);
 
       if (fetchedChats.length === 0) {
-        // Safe one-time creation to avoid infinite recursion
-        const res = await axios.get("/api/chat/create", { headers: { Authorization: `Bearer ${token}` } });
-        if (res.data?.success) {
-          const fresh = await axios.get("/api/chat/get", { headers: { Authorization: `Bearer ${token}` } });
-          const newChats = fresh.data?.chats || fresh.data?.chatts || [];
-          setchats(newChats);
-          if (newChats.length > 0) setselecteChat(newChats[0]);
-        }
+        setselecteChat(null);
       } else {
         setselecteChat((prev) => {
           if (prev) {
@@ -80,10 +73,12 @@ const fetchUsersChats = async () => {
       }
     } else {
       setchats([]);
+      setselecteChat(null);
       toast.error(data.message);
     }
   } catch (error) {
     setchats([]);
+    setselecteChat(null);
     toast.error(error.message);
   }
 };

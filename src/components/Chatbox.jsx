@@ -20,6 +20,8 @@ const Chatbox = () => {
   useEffect(() => {
     if (selecteChat) {
       setmessages(selecteChat.messages || [])
+    } else {
+      setmessages([])
     }
   }, [selecteChat])
 
@@ -37,9 +39,27 @@ const Chatbox = () => {
         currentChat = chats[0]
         setselecteChat(chats[0])
       } else {
-        toast.error("Please create a chat first using '+ New Chat'")
-        return
+        try {
+          const createRes = await axios.get("/api/chat/create", { headers: { Authorization: `Bearer ${token}` } })
+          if (createRes.data.success) {
+            const fresh = await axios.get("/api/chat/get", { headers: { Authorization: `Bearer ${token}` } })
+            const newChats = fresh.data.chats || fresh.data.chatts || []
+            setchats(newChats)
+            if (newChats.length > 0) {
+              currentChat = newChats[0]
+              setselecteChat(newChats[0])
+            }
+          }
+        } catch (err) {
+          toast.error("Could not initialize chat session")
+          return
+        }
       }
+    }
+
+    if (!currentChat) {
+      toast.error("Unable to create chat. Please try again.")
+      return
     }
 
     try {
