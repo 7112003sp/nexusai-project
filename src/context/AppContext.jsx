@@ -12,7 +12,7 @@ export const AppContextProvider = ({children}) => {
     const [user, setuser] = useState(null)
     const [chats, setchats] = useState([])
     const [selecteChat, setselecteChat] = useState(null)
-    const [theme, settheme] = useState(localStorage.getItem('theme') || 'light')
+    const [theme, settheme] = useState(localStorage.getItem('theme') || 'dark')
     const [token,settokken] = useState(localStorage.getItem('token') || null)
     const [loading, setloading] = useState(true)
 

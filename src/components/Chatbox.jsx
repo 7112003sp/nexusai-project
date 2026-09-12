@@ -90,7 +90,7 @@ const Chatbox = () => {
     placeholder="Type your prompt here..."
     value={prompt}
     onChange={(e) => setPrompt(e.target.value)}
-    className="flex-1 w-full text-xs sm:text-sm outline-none bg-transparent dark:text-white text-gray-800 placeholder:text-gray-400"
+    className="flex-1 w-full text-[16px] sm:text-sm outline-none bg-transparent dark:text-white text-gray-800 placeholder:text-gray-400"
     required
   />
 

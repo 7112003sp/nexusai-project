@@ -51,8 +51,14 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
 
   return  (
     <>
-   <div className={`flex h-screen flex-col md:min-w-72 min-w-84 p-4 dark:bg-linear-to-b
-    from=[#242124]/30 to-[#000000] border-r border-[#80609F]/30 max-md:fixed max-md:left-0 max-md:top-0 z-50 backdrop-blur-3xl
+    {ismenuopen && (
+      <div 
+        onClick={() => setismenuopen(false)} 
+        className='fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm transition-opacity'
+      />
+    )}
+   <div className={`flex h-screen flex-col md:min-w-72 min-w-72 sm:min-w-84 p-4 bg-gray-900 dark:bg-linear-to-b
+    from-[#242124] to-[#000000] border-r border-[#80609F]/30 max-md:fixed max-md:left-0 max-md:top-0 max-md:h-full max-md:w-72 z-50 overscroll-contain touch-pan-y
     transition-transform duration-500 ${ismenuopen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full'}`}>
       <div className='flex flex-row gap-1.5'>
       <img className='w-16 h-16 object-contain cursor-pointer ' 
@@ -65,10 +71,10 @@ const Sidebar = ({ismenuopen,setismenuopen}) => {
       <button onClick={handleCreateChat} className='bg-[#0A9BFF] w-full text-white flex justify-center text-sm items-center cursor-pointer h-10 py-4 mt-10  rounded-md'>+ New Chat</button>
       <div className='flex items-center gap-2 p-2 w-full mt-4 border border-gray-400 dark:border-white/20 rounded-md '>
         <CiSearch className='text-2xl dark:text-white'/>
-        <input onChange={(e) => setsearch(e.target.value)} value={search} type='text' placeholder='Search coversations' className='text-xs placeholder:text-gray-400 outline-none'/>
+        <input onChange={(e) => setsearch(e.target.value)} value={search} type='text' placeholder='Search coversations' className='text-xs placeholder:text-gray-400 outline-none bg-transparent dark:text-white'/>
       </div>
-      {(chats || []).length > 0 && <p className='mt-4 text-sm'>Recent Chats</p>}
-      <div className='flex-1 overflow-y-scroll mt-3 text-sm space-y-3'>
+      {(chats || []).length > 0 && <p className='mt-4 text-sm dark:text-white'>Recent Chats</p>}
+      <div className='flex-1 overflow-y-auto mt-3 text-sm space-y-3 overscroll-contain pr-1'>
        {
         (chats || []).filter((chat) => chat.messages && chat.messages[0] ? chat.messages[0]?.content.toLowerCase().includes(search.toLowerCase()) : (chat.name || '').toLowerCase().includes(search.toLowerCase()))
         .map((chat,id) => (
