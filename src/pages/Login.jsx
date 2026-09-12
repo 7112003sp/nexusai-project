@@ -31,7 +31,7 @@ const Login = () => {
         psw: formData.password,
       });
 
-      if (data.success) {
+      if (data.success === true || data.success === "true") {
         settokken(data.token);
         localStorage.setItem("token", data.token);
 
